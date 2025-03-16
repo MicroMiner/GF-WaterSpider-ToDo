@@ -1,19 +1,19 @@
 document.addEventListener("DOMContentLoaded", () => {
     const stepCategory = document.getElementById("step-category");
     const stepObject = document.getElementById("step-object");
-    const stepVerbrauch = document.getElementById("step-verbrauch");
     const stepTableNr = document.getElementById("step-tableNr");
     const stepInfo = document.getElementById("step-info");
+    const stepVerbrauch = document.getElementById("step-verbrauch"); // ✅ Fix für richtige ID
     const summarySection = document.getElementById("summary");
     const summaryContainer = document.getElementById("summary-content");
     const infoTextInput = document.getElementById("infoText");
     const confirmInfoBtn = document.getElementById("confirmInfo");
-    const tableTitle = document.getElementById("tableTitle"); // Dynamischer Titel für Tisch-Auswahl
+    const tableTitle = document.getElementById("tableTitle");
 
     let selectedData = {}; 
     let fromTableNrSelected = false;
 
-    // ** Fix: Alle Schritte ausblenden, außer `step-category` **
+    // ** Fix: Alle Schritte außer `step-category` beim Laden ausblenden **
     if (stepCategory) {
         stepCategory.style.display = "flex";
     } else {
@@ -22,8 +22,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (stepObject) stepObject.style.display = "none";
     if (stepTableNr) stepTableNr.style.display = "none";
-    if (stepVerbrauch) stepVerbrauch.style.display = "none";
     if (stepInfo) stepInfo.style.display = "none";
+    if (stepVerbrauch) stepVerbrauch.style.display = "none"; // **Fix: Verbrauch von Anfang an ausblenden**
     if (summarySection) summarySection.style.display = "none";
 
     // ** Sicherstellen, dass der Bestätigungsbutton existiert **
@@ -57,12 +57,29 @@ document.addEventListener("DOMContentLoaded", () => {
             selectedData["Was"] = box.getAttribute("data-value");
             stepObject.style.display = "none";
 
-            if (selectedData["Kategorie"] === "Lieferung") {
+            if (selectedData["Was"] === "Verbrauchsgütter") {
+                stepVerbrauch.style.display = "flex"; // ✅ **Verbrauchsauswahl anzeigen**
+            } else if (selectedData["Kategorie"] === "Lieferung") {
                 stepTableNr.style.display = "flex"; 
             } else if (selectedData["Kategorie"] === "Info") {
                 stepInfo.style.display = "flex";  
             } else {
                 stepTableNr.style.display = "flex"; 
+            }
+        });
+    });
+
+    // ** Verbrauchsgüter auswählen **
+    document.querySelectorAll("#step-verbrauch .box").forEach(box => {
+        box.addEventListener("click", () => {
+            selectedData["Verbrauchsgut"] = box.getAttribute("data-value");
+            stepVerbrauch.style.display = "none"; 
+
+            if (selectedData["Kategorie"] === "Lieferung" || selectedData["Kategorie"] === "Abholung") {
+                selectedData["Zu Tisch"] = ""; // Sicherstellen, dass es existiert
+                stepTableNr.style.display = "flex"; // **Nur "Zu Tisch" anzeigen**
+            } else {
+                stepInfo.style.display = "flex"; 
             }
         });
     });
@@ -76,7 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (!fromTableNrSelected) {
                     selectedData["Von Tisch"] = tableNr;
                     fromTableNrSelected = true;
-                    if (tableTitle) tableTitle.innerText = "Zu Tisch auswählen:"; // **Titel ändern**
+                    if (tableTitle) tableTitle.innerText = "Zu Tisch auswählen:";
                 } else {
                     selectedData["Zu Tisch"] = tableNr;
                     stepTableNr.style.display = "none";
@@ -111,8 +128,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // ** Speicherung & Weiterleitung **
     document.addEventListener("click", (event) => {
         if (event.target && event.target.id === "saveTodo") {
-            saveTodo(selectedData);  // **To-Do wird jetzt in `storage.js` gespeichert**
-            window.location.href = "index.html";
+            saveTodo(selectedData);
+            window.location.href = "index-chatgpt.html";
         }
     });
 });
