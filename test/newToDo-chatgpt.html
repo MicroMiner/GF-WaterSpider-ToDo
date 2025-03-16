@@ -3,86 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neues To-Do</title>
     <link rel="stylesheet" href="style-chatgpt.css">
-    <title>WS-Todo</title>
 </head>
 <body>
+    <main>
 
-    <div id="step-category" class="stepWrapper">
-        <div class="titel"><h1>Wähle die Kategorie:</h1></div>
-        <div class="category">
-            <div class="box" data-value="Lieferung">
-                <span>Lieferung</span>
-                <img class="icon" src="/icon_delivery.svg" alt="Lieferung">
+        <!-- * ----------------------------------------------------------------- -->
+        <!-- * -- Kategorie -->
+        <!-- * ----------------------------------------------------------------- -->
+        <div id="step-category" class="stepWrapper">
+            <h1>Wähle eine Kategorie:</h1>
+            <div class="table-container">
+                <div class="box" data-value="Abholung">Abholung
+                    <img src="icon_forklift.svg" alt="forklift icon">
+                </div>
+                <div class="box" data-value="Lieferung">Lieferung
+                    <img src="icon_delivery.svg" alt="delivery icon">
+                </div>
+                <div class="box" data-value="Info">Info
+                    <img src="icon_info.svg" alt="info icon">
+                </div>
             </div>
-            <div class="box" data-value="Abholung">
-                <span>Abholung</span>
-                <img class="icon" src="/icon_forklift.svg" alt="">
+        </div>
+
+
+        <!-- * ----------------------------------------------------------------- -->
+        <!-- * -- Object -->
+        <!-- * ----------------------------------------------------------------- -->
+        <div id="step-object" class="stepWrapper">
+            <h1>Wähle ein Objekt:</h1>
+            <div class="table-container">
+                <div class="box" data-value="Kiste">Kiste</div>
+                <div class="box" data-value="BitoBox">BitoBox</div>
+                <div class="box" data-value="Palette">Palette</div>
+                <div class="box" data-value="Rahmen">Rahmen</div>
+                <div class="box" data-value="Palette_mit_Rahmen">Palette mit Rahmen</div>
+                <div class="box" data-value="Verbrauchsgütter">Verbrauchtsgütter -></div>
             </div>
-            <div class="box" data-value="Info">
-                <span>Info</span>
-                <img class="icon" src="/icon_info.svg" alt="">
+        </div>
+
+
+        <!-- * ----------------------------------------------------------------- -->
+        <!-- * -- Verbrauchsgütter -->
+        <!-- * ----------------------------------------------------------------- -->
+        <div id="step-verbrauch" class="stepWrapper">
+            <h1>Wähle das gewünschte Verbrauchtsgüt:</h1>
+            <div class="table-container">
+                <div class="box" data-value="Plastikbeutel">Plastikbeutel</div>
+                <div class="box" data-value="Plastikbeutel">Etiketten</div>
+                <div class="box" data-value="Küchenpapier">Küchenpapier</div>
+                <div class="box" data-value="Klebeband">Klebeband</div>
+                <div class="box" data-value="Folie">Folie</div>
             </div>
-            <div class="box" data-value=""><span>--</span></div>
-            <div class="box" data-value=""><span>--</span></div>
-            <div class="box" data-value=""><span>--</span></div>
         </div>
-    </div>
 
-    <div id="step-tableNr" class="stepWrapper" style="display: none;">
-        <div class="titel"><h1>Wähle die Tisch-Nr:</h1></div>
-        <div class="tableNr">
-            <div class="box" data-value="T3">T3</div>
-            <div class="box" data-value="T4">T4</div>
-            <div class="box" data-value="T6">T6</div>
-            <div class="box" data-value="T7">T7</div>
-            <div class="box" data-value="T8">T8</div>
-            <div class="box" data-value="T9">T9</div>
-            <div class="box" data-value="T10">T10</div>
-            <div class="box" data-value="T11">T11</div>
-            <div class="box" data-value="T12">T12</div>
-            <div class="box" data-value="T13">T13</div>
-            <div class="box" data-value="T14">T14</div>
-            <div class="box" data-value="T18">T18</div>
-            <div class="box" data-value="T19">T19</div>
-            <div class="box" data-value="T20">T20</div>
-            <div class="box" data-value="T21">T21</div>
-            <div class="box" data-value="T23">T23</div>
-            <div class="box" data-value="T25">T25</div>
-            <div class="box" data-value="T27">T27</div>
-            <div class="box" data-value="T28">T28</div>
-            <div class="box" data-value="T29">T29</div>
-            <div class="box" data-value="T30">T30</div>
-            <div class="box" data-value="T31">T31</div>
-            <div class="box" data-value="T71">T71</div>
-            <div class="box" data-value="T73">T73</div>
-            <div class="box" data-value="T75">T75</div>
-            <div class="box" data-value="T77">T77</div>
-            <div class="box" data-value="T79">T79</div>
-            <div class="box" data-value="">--</div>
+
+        <!-- * ----------------------------------------------------------------- -->
+        <!-- * -- Tisch Nummer -->
+        <!-- * ----------------------------------------------------------------- -->
+        <div id="step-tableNr" class="stepWrapper" style="display: none;">
+            <h1 id="tableTitle" class="title">Von Tisch:</h1>
+            <div id="tableNr-container">
+                <div class="box" data-value="T3">T3</div>
+                <div class="box" data-value="T4">T4</div>
+                <div class="box" data-value="T6">T6</div>
+                <div class="box" data-value="T7">T7</div>
+                <div class="box" data-value="T8">T8</div>
+                <div class="box" data-value="T9">T9</div>
+                <div class="box" data-value="T10">T10</div>
+                <div class="box" data-value="T11">T11</div>
+                <div class="box" data-value="T12">T12</div>
+                <div class="box" data-value="T13">T13</div>
+                <div class="box" data-value="T14">T14</div>
+                <div class="box" data-value="T18">T18</div>
+                <div class="box" data-value="T19">T19</div>
+                <div class="box" data-value="T20">T20</div>
+                <div class="box" data-value="T21">T21</div>
+                <div class="box" data-value="T23">T23</div>
+                <div class="box" data-value="T25">T25</div>
+                <div class="box" data-value="T27">T27</div>
+                <div class="box" data-value="T28">T28</div>
+                <div class="box" data-value="T29">T29</div>
+                <div class="box" data-value="T30">T30</div>
+                <div class="box" data-value="T31">T31</div>
+                <div class="box" data-value="V71">V71</div>
+                <div class="box" data-value="V73">V73</div>
+                <div class="box" data-value="V75">V75</div>
+                <div class="box" data-value="V7">V77</div>
+                <div class="box" data-value="V79">V79</div>
+                <div class="box" data-value="Lager">Lager</div>   
+                <div class="box" data-value="QP">QP</div>
+                <div class="box longLayout" data-value="Spedition">Spedition</div>
+                <div class="box longLayout" data-value="Bearbeitung">Bearbeitung</div>
+            </div>
         </div>
-    </div>
 
-    <div id="step-info" class="stepWrapper" style="display: none;">
-        <div class="titel"><h1>Was:</h1></div>
-        <div class="info">
-            <div class="box" data-value="Rollbehälter">blauer Transportroller</div>
-            <div class="box" data-value="Palette">Palette</div>
-            <div class="box" data-value="Rahmen">Rahmen</div>
-            <div class="box" data-value="Palette mit Rahmen">Palette <br> mit Rahmen</div>
-            <div class="box" data-value="">--</div>
-            <div class="box" data-value="Verbrauchsgut">Verbrauchsgut -></div>
+
+        <!-- * ----------------------------------------------------------------- -->
+        <!-- * -- Info -->
+        <!-- * ----------------------------------------------------------------- -->
+        <div id="step-info" class="stepWrapper" style="display: none;">
+            <h1>Zusätzliche Info:</h1>
+            <input type="text" id="infoText" placeholder="Wichtige Notiz hier eingeben...">
+            <button id="confirmInfo">Bestätigen</button>
         </div>
-    </div>
+        
 
-    <div id="summary" class="stepWrapper" style="display: none;">
-        <h1>Zusammenfassung:</h1>
-        <p><strong>Kategorie:</strong> <span id="summary-category"></span></p>
-        <p><strong>Tisch Nr:</strong> <span id="summary-tableNr"></span></p>
-        <p><strong>Info:</strong> <span id="summary-info"></span></p>
-        <button id="saveTodo">hinzufügen</button>
-    </div>
+        <!-- * ----------------------------------------------------------------- -->
+        <!-- * -- Zusammenfassung -->
+        <!-- * ----------------------------------------------------------------- --> 
+        <div id="summary" class="stepWrapper" style="display: none;">
+            <h1>Zusammenfassung:</h1>
+            <div id="summary-content"></div>
+            <button id="saveTodo">Hinzufügen</button>
+        </div>
+    </main>
 
+    <script src="storage.js"></script>
     <script src="script-chatgpt.js"></script>
 </body>
 </html>
+
+
+
+           
