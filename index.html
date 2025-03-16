@@ -7,14 +7,22 @@
     <title>WS-Todo</title>
 </head>
 <body>
-    <div id="todoWrapper">
-        <div class="titel-TodoList">
-            <a href="newToDo.html"><span id="newItem">+ Todo hinzufügen</span></a>
-            <h1>Offene ToDos:</h1>
-        </div>
-        <div id="todoContainer"></div>
-    </div>
+    <main>
+        <div id="todoWrapper">
 
-<script src="script.js"></script>
+            <!-- * Titel -->
+            <div class="titel-TodoList">
+                <a href="newToDo.html"><span id="newItem">+ Todo hinzufügen</span></a> <!-- hinzufügen Button -->
+                <h1>Offene ToDos:</h1> <!-- Titel -->
+                <img id="logo" src="/GF_Logo.png" alt="Georg Fischer Logo [ +GF+ ]"> <!-- Firmen Logo -->
+            </div>
+            <div id="todoContainer">
+                <!-- ? Hier werden die dynamischen Todos aufgefürt -->
+            </div> 
+        </div>
+    </main>
+    
+    <script src="storage.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

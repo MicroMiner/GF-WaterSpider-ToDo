@@ -1,88 +1,118 @@
 document.addEventListener("DOMContentLoaded", () => {
     const stepCategory = document.getElementById("step-category");
+    const stepObject = document.getElementById("step-object");
+    const stepVerbrauch = document.getElementById("step-verbrauch");
     const stepTableNr = document.getElementById("step-tableNr");
     const stepInfo = document.getElementById("step-info");
     const summarySection = document.getElementById("summary");
+    const summaryContainer = document.getElementById("summary-content");
+    const infoTextInput = document.getElementById("infoText");
+    const confirmInfoBtn = document.getElementById("confirmInfo");
+    const tableTitle = document.getElementById("tableTitle"); // Dynamischer Titel für Tisch-Auswahl
 
-    const summaryCategory = document.getElementById("summary-category");
-    const summaryTableNr = document.getElementById("summary-tableNr");
-    const summaryInfo = document.getElementById("summary-info");
+    let selectedData = {}; 
+    let fromTableNrSelected = false;
 
-    let selectedCategory = "";
-    let selectedTableNr = "";
-    let selectedInfo = "";
+    // ** Fix: Alle Schritte ausblenden, außer `step-category` **
+    if (stepCategory) {
+        stepCategory.style.display = "flex";
+    } else {
+        console.error("❌ FEHLER: 'step-category' wurde nicht gefunden.");
+    }
 
-    // Deaktivieren von Elementen mit leerem data-value
-    document.querySelectorAll("#step-category .box, #step-tableNr .box, #step-info .box").forEach(box => {
-        if (box.getAttribute("data-value") === "") {
-            box.style.pointerEvents = "none"; // Klicks deaktivieren
-            box.style.opacity = "0.5"; // Visuell ausgrauen (optional)
-        } else {
-            box.addEventListener("click", () => {
-                let step = box.closest(".stepWrapper").id;
-                if (step === "step-category") {
-                    selectedCategory = box.getAttribute("data-value");
-                    summaryCategory.innerText = selectedCategory;
-                    stepCategory.style.display = "none";
-                    stepTableNr.style.display = "grid";
-                } else if (step === "step-tableNr") {
-                    selectedTableNr = box.getAttribute("data-value");
-                    summaryTableNr.innerText = selectedTableNr;
+    if (stepObject) stepObject.style.display = "none";
+    if (stepTableNr) stepTableNr.style.display = "none";
+    if (stepVerbrauch) stepVerbrauch.style.display = "none";
+    if (stepInfo) stepInfo.style.display = "none";
+    if (summarySection) summarySection.style.display = "none";
+
+    // ** Sicherstellen, dass der Bestätigungsbutton existiert **
+    if (confirmInfoBtn) {
+        confirmInfoBtn.addEventListener("click", () => {
+            selectedData["Info"] = infoTextInput.value.trim() || "Keine Notiz";
+            stepInfo.style.display = "none";
+            updateSummary();
+        });
+    }
+
+    // ** Kategorie auswählen **
+    document.querySelectorAll("#step-category .box").forEach(box => {
+        box.addEventListener("click", () => {
+            selectedData["Kategorie"] = box.getAttribute("data-value");
+
+            stepCategory.style.display = "none";
+            stepObject.style.display = "none";
+
+            if (selectedData["Kategorie"] === "Abholung" || selectedData["Kategorie"] === "Lieferung") {
+                stepObject.style.display = "flex"; 
+            } else if (selectedData["Kategorie"] === "Info") {
+                stepInfo.style.display = "flex";  
+            }
+        });
+    });
+
+    // ** Objekt auswählen **
+    document.querySelectorAll("#step-object .box").forEach(box => {
+        box.addEventListener("click", () => {
+            selectedData["Was"] = box.getAttribute("data-value");
+            stepObject.style.display = "none";
+
+            if (selectedData["Kategorie"] === "Lieferung") {
+                stepTableNr.style.display = "flex"; 
+            } else if (selectedData["Kategorie"] === "Info") {
+                stepInfo.style.display = "flex";  
+            } else {
+                stepTableNr.style.display = "flex"; 
+            }
+        });
+    });
+
+    // ** Tischnummer auswählen (mit Titelwechsel) **
+    document.querySelectorAll("#step-tableNr .box").forEach(box => {
+        box.addEventListener("click", () => {
+            let tableNr = box.getAttribute("data-value");
+
+            if (selectedData["Kategorie"] === "Abholung") {
+                if (!fromTableNrSelected) {
+                    selectedData["Von Tisch"] = tableNr;
+                    fromTableNrSelected = true;
+                    if (tableTitle) tableTitle.innerText = "Zu Tisch auswählen:"; // **Titel ändern**
+                } else {
+                    selectedData["Zu Tisch"] = tableNr;
                     stepTableNr.style.display = "none";
-                    stepInfo.style.display = "grid";
-                } else if (step === "step-info") {
-                    selectedInfo = box.getAttribute("data-value");
-                    summaryInfo.innerText = selectedInfo;
-                    stepInfo.style.display = "none";
-                    summarySection.style.display = "grid";
+                    updateSummary();
                 }
-            });
-        }
+            } else {
+                selectedData["Zu Tisch"] = tableNr;
+                stepTableNr.style.display = "none";
+                updateSummary();
+            }
+        });
     });
 
-    // Dynamische Event Delegation für den Speicher-Button
-    document.addEventListener("click", (event) => {
-        if (event.target && event.target.id === "saveTodo") {
-            console.log("Speicher-Button geklickt!");
+    // ** Summery aktualisieren **
+    function updateSummary() {
+        summaryContainer.innerHTML = ""; 
 
-            let newTodo = {
-                category: document.getElementById("summary-category").innerText,
-                tableNr: document.getElementById("summary-tableNr").innerText,
-                info: document.getElementById("summary-info").innerText
-            };
-
-            let todos = JSON.parse(localStorage.getItem("todos")) || [];
-            todos.push(newTodo);
-            localStorage.setItem("todos", JSON.stringify(todos));
-
-            console.log("Gespeicherte Todos:", localStorage.getItem("todos"));
-
-            window.location.href = "index.html";
+        if (Object.keys(selectedData).length === 0) {
+            console.warn("Summery enthält keine Daten, wird nicht angezeigt.");
+            return;
         }
-    });
 
-    //* Wiedergabe der Daten
-    const todoContainer = document.getElementById("todoContainer");
-
-    let todos = JSON.parse(localStorage.getItem("todos")) || [];
-
-    todos.forEach(todo => {
-        let todoItem = document.createElement("div");
-        todoItem.classList.add("todo-item");
-        todoItem.innerHTML = `
-            <span>${todo.category}</span>
-            <span>${todo.tableNr}</span>
-            <span>${todo.info}</span>
-            <button class="close-btn">X</button>
-        `;
-
-        // Löschen-Button Funktionalität
-        todoItem.querySelector(".close-btn").addEventListener("click", () => {
-            todos = todos.filter(t => t !== todo);
-            localStorage.setItem("todos", JSON.stringify(todos));
-            todoItem.remove();
+        Object.keys(selectedData).forEach(key => {
+            let p = document.createElement("p");
+            p.innerHTML = `<strong>${key}:</strong> ${selectedData[key]}`;
+            summaryContainer.appendChild(p);
         });
 
-        todoContainer.appendChild(todoItem);
+        summarySection.style.display = "flex"; 
+    }
+
+    // ** Speicherung & Weiterleitung **
+    document.addEventListener("click", (event) => {
+        if (event.target && event.target.id === "saveTodo") {
+            saveTodo(selectedData);  // **To-Do wird jetzt in `storage.js` gespeichert**
+            window.location.href = "index.html";
+        }
     });
 });
