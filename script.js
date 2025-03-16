@@ -129,7 +129,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.addEventListener("click", (event) => {
         if (event.target && event.target.id === "saveTodo") {
             saveTodo(selectedData);
-            window.location.href = "index-chatgpt.html";
+            window.location.href = "index.html";
         }
     });
 });
