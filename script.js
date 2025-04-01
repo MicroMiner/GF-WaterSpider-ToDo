@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     const stepCategory = document.getElementById("step-category");
-    const stepObject = document.getElementById("step-object");
+    const stepObjectLieferung = document.getElementById("step-object-lieferung");
+    const stepObjectAbholung = document.getElementById("step-object-abholung");
     const stepTableNr = document.getElementById("step-tableNr");
     const stepInfo = document.getElementById("step-info");
     const stepVerbrauch = document.getElementById("step-verbrauch"); // ✅ Fix für richtige ID
@@ -20,7 +21,8 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error("❌ FEHLER: 'step-category' wurde nicht gefunden.");
     }
 
-    if (stepObject) stepObject.style.display = "none";
+    if (stepObjectLieferung) stepObjectLieferung.style.display = "none";
+    if (stepObjectAbholung) stepObjectAbholung.style.display = "none";
     if (stepTableNr) stepTableNr.style.display = "none";
     if (stepInfo) stepInfo.style.display = "none";
     if (stepVerbrauch) stepVerbrauch.style.display = "none"; // **Fix: Verbrauch von Anfang an ausblenden**
@@ -41,23 +43,44 @@ document.addEventListener("DOMContentLoaded", () => {
             selectedData["Kategorie"] = box.getAttribute("data-value");
 
             stepCategory.style.display = "none";
-            stepObject.style.display = "none";
+            stepObjectLieferung.style.display = "none";
+            stepObjectAbholung.style.display = "none";
 
-            if (selectedData["Kategorie"] === "Abholung" || selectedData["Kategorie"] === "Lieferung") {
-                stepObject.style.display = "flex"; 
+            if (selectedData["Kategorie"] === "Lieferung")
+                stepObjectLieferung.style.display = "flex";
+            else if (selectedData["Kategorie"] === "Abholung") {
+                stepObjectAbholung.style.display = "flex"; 
             } else if (selectedData["Kategorie"] === "Info") {
                 stepInfo.style.display = "flex";  
             }
         });
     });
 
-    // ** Objekt auswählen **
-    document.querySelectorAll("#step-object .box").forEach(box => {
+    // ** Lieferungs-Objekt auswählen **
+    document.querySelectorAll("#step-object-lieferung .box").forEach(box => {
         box.addEventListener("click", () => {
             selectedData["Was"] = box.getAttribute("data-value");
-            stepObject.style.display = "none";
+            stepObjectLieferung.style.display = "none";
 
-            if (selectedData["Was"] === "Verbrauchsgütter") {
+            if (selectedData["Was"] === "verbrauchsgut") {
+                stepVerbrauch.style.display = "flex"; // ✅ **Verbrauchsauswahl anzeigen**
+            } else if (selectedData["Kategorie"] === "Lieferung") {
+                stepTableNr.style.display = "flex"; 
+            } else if (selectedData["Kategorie"] === "Info") {
+                stepInfo.style.display = "flex";  
+            } else {
+                stepTableNr.style.display = "flex"; 
+            }
+        });
+    });
+
+    // ** Abholungs-Objekt auswählen **
+    document.querySelectorAll("#step-object-abholung .box").forEach(box => {
+        box.addEventListener("click", () => {
+            selectedData["Was"] = box.getAttribute("data-value");
+            stepObjectAbholung.style.display = "none";
+
+            if (selectedData["Was"] === "verbrauchsgut") {
                 stepVerbrauch.style.display = "flex"; // ✅ **Verbrauchsauswahl anzeigen**
             } else if (selectedData["Kategorie"] === "Lieferung") {
                 stepTableNr.style.display = "flex"; 
