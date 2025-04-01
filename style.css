@@ -31,6 +31,8 @@ main {
 
 #newToDo-site {
     color: rgb(53, 53, 53);
+    display: grid;
+    place-items: center;
 }
 
 h1 {
@@ -95,6 +97,10 @@ a {
 /* Step-Wrapper */
 .stepWrapper {
     display: none; /* Alle Schritte sind standardmäßig ausgeblendet */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
     padding: 20px;
     background-color: white;
     border: 1px solid #ccc;
