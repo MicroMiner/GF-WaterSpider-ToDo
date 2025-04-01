@@ -143,9 +143,23 @@ a {
     /* background-color: brown; */
 }
 
+#confirmInfo,
 #saveTodo {
     padding: 10px 20px;
 }
+
+#infoText {
+    width: 70%;
+    height: 40px;
+}
+
+
+
+
+
+
+
+/* -------------------------------------INDEX--------------------------------------- */
 
 .todo-item {
     background: #4f4f4f;
