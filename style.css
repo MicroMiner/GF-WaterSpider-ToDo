@@ -21,9 +21,16 @@ main {
 
     font-size: 1.2em;
     font-family:Verdana, Geneva, Tahoma, sans-serif;
-    color: rgb(212, 212, 212);
 
     /* background-color: gray; */
+}
+
+#index-site {
+    color: rgb(212, 212, 212);
+}
+
+#newToDo-site {
+    color: rgb(53, 53, 53);
 }
 
 h1 {
