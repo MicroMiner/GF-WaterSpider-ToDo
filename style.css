@@ -127,6 +127,11 @@ a {
     display: none; /* Schritt ist jetzt standardmäßig ausgeblendet */
 }
 
+.box[data-value="verbrauchsgut"] {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
 /* To-Do Liste */
 #todoContainer {
     width: 100%;
@@ -136,6 +141,10 @@ a {
 
     overflow: scroll;
     /* background-color: brown; */
+}
+
+#saveTodo {
+    padding: 10px 20px;
 }
 
 .todo-item {
